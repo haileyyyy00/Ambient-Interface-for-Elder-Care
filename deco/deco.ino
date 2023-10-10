@@ -20,6 +20,6 @@ void loop() {
 }
 
 void startHeat(int threshold, int temp){
-  int fanSpeed = 255 - (abs(threshold-temp)*10);
+  int heatLevel = 255 - (abs(threshold-temp)*10);
   analogWrite( 9, fanSpeed );
   }
