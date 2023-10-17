@@ -33,9 +33,8 @@ int32_t heartRate; //heart rate value
 byte pulseLED = 11; //Must be on PWM pin
 byte readLED = 13; //Blinks with each data read
 
-void setup()
-{
-  Serial.begin(115200); // initialize serial communication at 115200 bits per second:
+void setup(){
+  Serial.begin(9600); // initialize serial communication at 115200 bits per second:
 
   pinMode(pulseLED, OUTPUT);
   pinMode(readLED, OUTPUT);
