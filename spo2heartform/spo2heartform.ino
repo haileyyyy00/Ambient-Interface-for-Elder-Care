@@ -9,6 +9,7 @@
   The MAX30105 Breakout can handle 5V or 3.3V I2C logic. We recommend powering the board with 5V
   but it will also run at 3.3V.
 */
+
 #include <Wire.h>
 #include "MAX30105.h"
 #include "spo2_algorithm.h"
@@ -99,15 +100,16 @@ void loop(){
     }   
 
 //  maxim_heart_rate_and_oxygen_saturation(irBuffer, bufferLength, redBuffer, &spo2, &validSPO2, &heartRate, &validHeartRate);
-  heartRate = (beats*6)/10;
+  heartRate = ((beats*6)/10)+ 60;
   red_dc /= 100;
   ir_dc /=100;
   float r = (red_ac/red_dc)/(ir_ac/ir_dc);
-  spo2 = 110 -25 * r;
+  spo2 = 110 - 25 * r;
+  spo2 -= 20;
   Serial.print(F(", HR="));
   Serial.println(heartRate, DEC);
   Serial.print(F(", SPO2="));
   Serial.println(spo2, DEC);
-  Serial.println(millis()-start);
-  while(1);
+//  Serial.println(millis()-start);
+  delay(5000);
 }

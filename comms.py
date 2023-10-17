@@ -1,5 +1,5 @@
 import serial
-import fall
+import main
 
 
 def connect(port):
@@ -22,10 +22,12 @@ def readData(ard):
 
 if __name__ == "__main__":
     inp = connect("COM7")
+    # out = connect("COM5")
     
     while 1:        
-        writeData(inp,"2")
         data = readData(inp)
+        print(data)
         if '10' in data:
-            print(5)
-        
+            # writeData(out,"1")
+            print("here")
+            main.main()
