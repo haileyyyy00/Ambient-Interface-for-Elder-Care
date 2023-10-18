@@ -54,8 +54,7 @@ void setup(){
 void loop() {
 
   int in = Serial.parseInt();
-  if (in == 1)
-  {
+  if (in == 1){
     checkHO2();
   }
   

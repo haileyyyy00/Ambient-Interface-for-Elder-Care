@@ -1,5 +1,6 @@
+import time, playsound
 import serial
-import camera, multiprocessing as mp
+import Camera.camera, multiprocessing as mp
 
 
 def connect(port):
@@ -11,32 +12,71 @@ def connect(port):
 
 
 def writeData(ard, data):
-    ard.write(bytes(data,  'utf-8'))
+    ard.write(bytes(data, "utf-8"))
 
 
 def readData(ard):
     data = ard.readline()
-    return (str(data))
+    return str(data)
 
-def test():
-    while 1:        
-        print(1)
 
-def test2():
-    camera.main()
+def connection(inp, out):
+
+    p2 = mp.Process(target=startCam)
+    
+
+    while 1:
+
+        camera = p2.start()
+        data = readData(inp)        
+
+        # ----------- Manual Activations -------------------
+        # data = str(input("Enter interaction number you want to see: "))
+        # --------------------------------------------------
+
+        if 1 in data:  # Ambient Light
+            playsound("/Audio/AmbientLight.mp3")
+        if 2 in data:  # Abnormal Temperature
+            writeData(out, "1")
+        if 3 in data:  # Touch Detected
+            playsound("/Audio/TouchSensor.mp3")
+        if 4 in data:  # Pressure Detected
+            playsound("/Audio/PressureSensor.mp3")
+        if 5 in data:  # Heart, SpO2 monitoring started
+            writeData(out, "2")
+            time.sleep(12)
+        if 6 in data:
+            writeData(out, "3")  # Irregular Heartbeat
+        if 7 in data:
+            writeData(out, "4")  # Irregular SpO2
+
+        if camera == 1:
+            playsound("/Audio/FallDetection.mp3")
+        elif camera == 2:
+            playsound("/Audio/Happy.mp3")
+        elif camera == 3:
+            playsound("/Audio/Sad.mp3")
+
+
+        p2.stop()
+
+
+# ----------- Manual Triggers -------------------
+#  - MAX3010
+# writeData(in,"1")
+# cam = p2.start()
+# 
+# --------------------------------------------------
+
+
+def startCam():
+    Camera.main()
+
 
 if __name__ == "__main__":
-    # inp = connect("COM7")
-    # out = connect("COM5")
 
-    p1 = mp.Process(target = test2)
-    p2 = mp.Process(target = test)
+    inp = connect("COM7")
+    out = connect("COM5")
+
+    p1 = mp.Process(target=connection, args=(inp, out))    
     p1.start()
-    p2.start()
-    # while 1:        
-    #     print(1)
-        # data = readData(inp)
-        # print(data)
-
-        # if 1 in data: # Heat Detection
-        #     writeData(out,"2")

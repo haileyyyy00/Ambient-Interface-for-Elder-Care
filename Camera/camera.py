@@ -1,11 +1,8 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-from pygame import mixer
 from keras.models import load_model
-from time import sleep
 from keras.preprocessing.image import img_to_array
-from keras.preprocessing import image
 import cv2
 import numpy as np
 
@@ -18,13 +15,14 @@ def main():
 
     mp_drawing = mp.solutions.drawing_utils
     mp_pose = mp.solutions.pose
-
-    mixer.init()
-    # mixer.music.load("C:/Users/eudre/Downloads/alarm.mp3")
     labels = []
+    emotion = 0
+    fallDetected = 0
     cap = cv2.VideoCapture(0)
     ## Setup mediapipe instance
-    with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
+    with mp_pose.Pose(
+        min_detection_confidence=0.5, min_tracking_confidence=0.5
+    ) as pose:
         while cap.isOpened():
             ret, frame = cap.read()
 
@@ -44,8 +42,12 @@ def main():
                 image,
                 results.pose_landmarks,
                 mp_pose.POSE_CONNECTIONS,
-                mp_drawing.DrawingSpec(color=(255, 255, 5), thickness=2, circle_radius=2),
-                mp_drawing.DrawingSpec(color=(225, 255, 0), thickness=2, circle_radius=2),
+                mp_drawing.DrawingSpec(
+                    color=(255, 255, 5), thickness=2, circle_radius=2
+                ),
+                mp_drawing.DrawingSpec(
+                    color=(225, 255, 0), thickness=2, circle_radius=2
+                ),
             )
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             faces = face_classifier.detectMultiScale(gray)
@@ -58,11 +60,6 @@ def main():
         cv2.destroyAllWindows()
 
     mp_drawing.DrawingSpec
-
-
-    def write_read(x):
-        print(x)
-
 
     def calculate_angle(a, b, c):
         a = np.array(a)  # First
@@ -79,9 +76,7 @@ def main():
 
         return int(angle)
 
-
     image_hight, image_width, _ = image.shape
-
 
     # cooldinate_NOSE
     x_coodinate_NOSE = (
@@ -93,10 +88,12 @@ def main():
 
     # cooldinate_LEFT_SHOULDER
     x_coodinate_LEFT_SHOULDER = (
-        results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_SHOULDER].x * image_width
+        results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_SHOULDER].x
+        * image_width
     )
     y_coodinate_LEFT_SHOULDER = (
-        results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_SHOULDER].y * image_hight
+        results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_SHOULDER].y
+        * image_hight
     )
 
     coodinate_LEFT_SHOULDER = [x_coodinate_LEFT_SHOULDER, y_coodinate_LEFT_SHOULDER]
@@ -104,10 +101,8 @@ def main():
     print(results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_SHOULDER].x)
     print(coodinate_LEFT_SHOULDER)
 
-
     print(image.shape)
     print([image_hight, image_width])
-
 
     cap = cv2.VideoCapture(0)
 
@@ -118,9 +113,10 @@ def main():
     counter_four = 0
     stage = None
 
-
     ## Setup mediapipe instance
-    with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
+    with mp_pose.Pose(
+        min_detection_confidence=0.5, min_tracking_confidence=0.5
+    ) as pose:
         while cap.isOpened():
             ret, frame = cap.read()
 
@@ -152,8 +148,13 @@ def main():
                     prediction = classifier.predict(roi)[0]
                     label = emotion_labels[prediction.argmax()]
                     label_position = (x, y)
-                    
-
+                    if label == "Happy":
+                        emotion = 2
+                    elif label == "Sad":
+                        emotion = 3
+                    else:
+                        emotion = 0
+                    return emotion
             # Extract landmarks
             try:
                 landmarks = results.pose_landmarks.landmark
@@ -174,22 +175,30 @@ def main():
                 # dot - LEFT_SHOULDER
 
                 dot_LEFT_SHOULDER_X = int(
-                    results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_SHOULDER].x
+                    results.pose_landmarks.landmark[
+                        mp_pose.PoseLandmark.LEFT_SHOULDER
+                    ].x
                     * image_width
                 )
                 dot_LEFT_SHOULDER_Y = int(
-                    results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_SHOULDER].y
+                    results.pose_landmarks.landmark[
+                        mp_pose.PoseLandmark.LEFT_SHOULDER
+                    ].y
                     * image_hight
                 )
 
                 # dot - RIGHT_SHOULDER
 
                 dot_RIGHT_SHOULDER_X = int(
-                    results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_SHOULDER].x
+                    results.pose_landmarks.landmark[
+                        mp_pose.PoseLandmark.RIGHT_SHOULDER
+                    ].x
                     * image_width
                 )
                 dot_RIGHT_SHOULDER_Y = int(
-                    results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_SHOULDER].y
+                    results.pose_landmarks.landmark[
+                        mp_pose.PoseLandmark.RIGHT_SHOULDER
+                    ].y
                     * image_hight
                 )
 
@@ -328,22 +337,30 @@ def main():
                 # dot - LEFT_FOOT_INDEX
 
                 dot_LEFT_FOOT_INDEX_X = int(
-                    results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_FOOT_INDEX].x
+                    results.pose_landmarks.landmark[
+                        mp_pose.PoseLandmark.LEFT_FOOT_INDEX
+                    ].x
                     * image_width
                 )
                 dot_LEFT_FOOT_INDEX_Y = int(
-                    results.pose_landmarks.landmark[mp_pose.PoseLandmark.LEFT_FOOT_INDEX].y
+                    results.pose_landmarks.landmark[
+                        mp_pose.PoseLandmark.LEFT_FOOT_INDEX
+                    ].y
                     * image_hight
                 )
 
                 # dot - LRIGHTFOOT_INDEX
 
                 dot_RIGHT_FOOT_INDEX_X = int(
-                    results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_FOOT_INDEX].x
+                    results.pose_landmarks.landmark[
+                        mp_pose.PoseLandmark.RIGHT_FOOT_INDEX
+                    ].x
                     * image_width
                 )
                 dot_RIGHT_FOOT_INDEX_Y = int(
-                    results.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_FOOT_INDEX].y
+                    results.pose_landmarks.landmark[
+                        mp_pose.PoseLandmark.RIGHT_FOOT_INDEX
+                    ].y
                     * image_hight
                 )
 
@@ -428,19 +445,33 @@ def main():
                 dot_RIGHT_LEG_HIP_KNEE_X = int((dot_RIGHT_HIP_X + dot_RIGHT_KNEE_X) / 2)
                 dot_RIGHT_LEG_HIP_KNEE_Y = int((dot_RIGHT_HIP_Y + dot_RIGHT_KNEE_Y) / 2)
 
-                RIGHT_LEG_HIP_KNEE = [dot_RIGHT_LEG_HIP_KNEE_X, dot_RIGHT_LEG_HIP_KNEE_Y]
+                RIGHT_LEG_HIP_KNEE = [
+                    dot_RIGHT_LEG_HIP_KNEE_X,
+                    dot_RIGHT_LEG_HIP_KNEE_Y,
+                ]
 
                 # dot - LEFT_LEG_KNEE_ANKLE
 
-                dot_LEFT_LEG_KNEE_ANKLE_X = int((dot_LEFT_ANKLE_X + dot_LEFT_KNEE_X) / 2)
-                dot_LEFT_LEG_KNEE_ANKLE_Y = int((dot_LEFT_ANKLE_Y + dot_LEFT_KNEE_Y) / 2)
+                dot_LEFT_LEG_KNEE_ANKLE_X = int(
+                    (dot_LEFT_ANKLE_X + dot_LEFT_KNEE_X) / 2
+                )
+                dot_LEFT_LEG_KNEE_ANKLE_Y = int(
+                    (dot_LEFT_ANKLE_Y + dot_LEFT_KNEE_Y) / 2
+                )
 
-                LEFT_LEG_KNEE_ANKLE = [dot_LEFT_LEG_KNEE_ANKLE_X, dot_LEFT_LEG_KNEE_ANKLE_Y]
+                LEFT_LEG_KNEE_ANKLE = [
+                    dot_LEFT_LEG_KNEE_ANKLE_X,
+                    dot_LEFT_LEG_KNEE_ANKLE_Y,
+                ]
 
                 # dot - RIGHT_LEG_KNEE_ANKLE
 
-                dot_RIGHT_LEG_KNEE_ANKLE_X = int((dot_RIGHT_ANKLE_X + dot_RIGHT_KNEE_X) / 2)
-                dot_RIGHT_LEG_KNEE_ANKLE_Y = int((dot_RIGHT_ANKLE_Y + dot_RIGHT_KNEE_Y) / 2)
+                dot_RIGHT_LEG_KNEE_ANKLE_X = int(
+                    (dot_RIGHT_ANKLE_X + dot_RIGHT_KNEE_X) / 2
+                )
+                dot_RIGHT_LEG_KNEE_ANKLE_Y = int(
+                    (dot_RIGHT_ANKLE_Y + dot_RIGHT_KNEE_Y) / 2
+                )
 
                 RIGHT_LEG_KNEE_ANKLE = [
                     dot_RIGHT_LEG_KNEE_ANKLE_X,
@@ -1120,8 +1151,8 @@ def main():
                 if falling:
                     stage = "falling"
 
-                    mixer.music.play()
-                    falldetected = 1
+                    fallDetected = 1
+                    return fallDetected
 
                 if (
                     Point_of_action_X < 320
@@ -1145,7 +1176,6 @@ def main():
                     counter_three += 1
                     print(Point_of_action, y)
                     print("Test", counter_three)
-                    mixer.music.stop()
                 if (
                     Point_of_action_X >= 320
                     and Point_of_action_Y > 240
@@ -1366,7 +1396,9 @@ def main():
                 image,
                 results.pose_landmarks,
                 mp_pose.POSE_CONNECTIONS,
-                mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=2, circle_radius=2),
+                mp_drawing.DrawingSpec(
+                    color=(255, 255, 255), thickness=2, circle_radius=2
+                ),
                 mp_drawing.DrawingSpec(color=(0, 0, 0), thickness=2, circle_radius=2),
             )
 
@@ -1377,8 +1409,9 @@ def main():
 
         cap.release()
         cv2.destroyAllWindows()
-
-        if falldetected :
-            return (1,label)
-        else :
-            return (0,label)
+    
+    if fallDetected:
+        return fallDetected
+    
+    if emotion:
+        return emotion
