@@ -31,10 +31,7 @@ void setup(){
   pinMode(readLED, OUTPUT);
 
   // Initialize sensor
-  if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) //Use default I2C port, 400kHz speed
-  {
-    Serial.println(F("MAX30105 was not found. Please check wiring/power."));
-  }
+  particleSensor.begin(Wire, I2C_SPEED_FAST)
 
   byte ledBrightness = 60; //Options: 0=Off to 255=50mA
   byte sampleAverage = 4; //Options: 1, 2, 4, 8, 16, 32
@@ -51,8 +48,8 @@ void setup(){
 void loop() {
 
   int in = Serial.parseInt();
-  if (in == 1)
-  {
+
+  if (in == 1){
     checkHO2();
   }
   
@@ -80,6 +77,7 @@ void checkHO2(){
   ir_min = 400;
   red_max = 0;
   red_min = 50000;
+  serial.println("Measuring vitals...")
 
     for (byte i = 0 ; i < 100 ; i++)  {
       while (particleSensor.available() == false) //do we have new data?
@@ -103,21 +101,14 @@ void checkHO2(){
             beats++;
           }
         }
-         
-          Serial.println(beats);
         particleSensor.nextSample();
     }   
 
 //  maxim_heart_rate_and_oxygen_saturation(irBuffer, bufferLength, redBuffer, &spo2, &validSPO2, &heartRate, &validHeartRate);
-  heartRate = (beats*6)/10;
+  heartRate = ((beats*6)/10)+ 60;
   red_dc /= 100;
   ir_dc /=100;
   float r = (red_ac/red_dc)/(ir_ac/ir_dc);
   spo2 = 110 -25 * r;
-  Serial.print(F(", HR="));
-  Serial.println(heartRate, DEC);
-  Serial.print(F(", SPO2="));
-  Serial.println(spo2, DEC);
-  Serial.println(millis()-start);
-  while(1);
+  
 }

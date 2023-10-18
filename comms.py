@@ -1,5 +1,5 @@
 import serial
-import main
+import main, multiprocessing as mp
 
 
 def connect(port):
@@ -16,18 +16,16 @@ def writeData(ard, data):
 
 def readData(ard):
     data = ard.readline()
-    # print(data)
     return (str(data))
 
 
 if __name__ == "__main__":
     inp = connect("COM7")
-    # out = connect("COM5")
+    out = connect("COM5")
     
     while 1:        
         data = readData(inp)
         print(data)
-        if '10' in data:
-            # writeData(out,"1")
-            print("here")
-            main.main()
+
+        if 1 in data: # Heat Detection
+            writeData(out,"2")
