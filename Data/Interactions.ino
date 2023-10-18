@@ -94,7 +94,31 @@ void heartLights(){
   delay(500);
   colorWipe(strip.Color(0, 255, 0)); // green
   colorWipe(strip.Color(255, 255, 0)); // yellow
+  delay(500);
+  colorWipe(strip.Color(0, 255, 0)); // green
+  colorWipe(strip.Color(255, 255, 0)); // yellowss
+  delay(500);
+  colorWipe(strip.Color(0, 255, 0)); // green
+  colorWipe(strip.Color(255, 255, 0)); // yellow
+  delay(500);
+  colorWipe(strip.Color(0, 255, 0)); // green
+  colorWipe(strip.Color(255, 255, 0)); // yellow
+  delay(500);
+  colorWipe(strip.Color(0, 255, 0)); // green
+  colorWipe(strip.Color(255, 255, 0)); // yellow
+  delay(500);
+  colorWipe(strip.Color(0, 255, 0)); // green
+  colorWipe(strip.Color(255, 255, 0)); // yellow
+  delay(500);
+  colorWipe(strip.Color(0, 255, 0)); // green
+  colorWipe(strip.Color(255, 255, 0)); // yellow    
+  delay(500);
+  colorWipe(strip.Color(0, 255, 0)); // green
+  colorWipe(strip.Color(255, 255, 0)); // yellow
+  delay(500);
   colorWipe(strip.Color(0, 0, 0));
+
+  
   }
   
 

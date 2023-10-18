@@ -15,22 +15,24 @@ uint32_t redBuffer[100];  //red LED sensor data
 #endif
 
 
-
+// Pulse and SpO2
 int32_t spo2; //SPO2 value
 int32_t heartRate; //heart rate value
+int pulseLED = 11; //Must be on PWM pin
+int readLED = 13; //Blinks with each data read
 
-byte pulseLED = 11; //Must be on PWM pin
-byte readLED = 13; //Blinks with each data read
-
-
+// Touch Functionality
+int touchSens = 12;
+int inputState;
+int lastInputState=1;
 
 void setup(){
+  
   Serial.begin(9600); // initialize serial communication at 115200 bits per second:
 
+// Initialize MAX30102
   pinMode(pulseLED, OUTPUT);
   pinMode(readLED, OUTPUT);
-
-  // Initialize sensor
   particleSensor.begin(Wire, I2C_SPEED_FAST)
 
   byte ledBrightness = 60; //Options: 0=Off to 255=50mA
@@ -41,6 +43,10 @@ void setup(){
   int adcRange = 4096; //Options: 2048, 4096, 8192, 16384
 
   particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange); //Configure sensor with these settings
+
+// Initialize touch sensor
+  pinMode(touchSens, INPUT);
+  
 }
 
 
@@ -48,26 +54,54 @@ void setup(){
 void loop() {
 
   int in = Serial.parseInt();
-
-  if (in == 1){
+  if (in == 1)
+  {
     checkHO2();
   }
   
   checkHeat();
-  delay(1000);
+  checkLight();
+  checkTouch();
+  checkPress();
   
 }
 
+void checkLight(){
+  int lightVal = analogRead(A0);
+  if (lightVal <=10){
+    Serial.println(1);
+    }
+  }
+  
 void checkHeat(){
-  int sensorValue = analogRead(A0);  
-  float voltage = sensorValue * (5.0 / 1023.0);
+  int tempVal = analogRead(A1);  
+  float voltage = tempVal * (5.0 / 1023.0);
   float temperature = voltage * 100;
   if (temperature > 20){
-    Serial.println(1);
+    Serial.println(2);
   }  
 }
 
+void checkTouch(){
+  inputState=digitalRead(touchSens);
+  if(lastInputState==0 && inputState==1){
+    if (LEDState==0){
+      Serial.println(3);
+    }
+  lastInputState=inputState;
+}
+
+void checkPress(){
+  int force = analogRead(A2);
+  if(force > 500){
+    Serial.println(4)
+  }  
+}
+
+
 void checkHO2(){
+
+  Serial.println(5);
   int start = millis();
   int beats = 0;
   float red_dc = 0;
@@ -104,11 +138,20 @@ void checkHO2(){
         particleSensor.nextSample();
     }   
 
-//  maxim_heart_rate_and_oxygen_saturation(irBuffer, bufferLength, redBuffer, &spo2, &validSPO2, &heartRate, &validHeartRate);
-  heartRate = ((beats*6)/10)+ 60;
+  heartRate = (beats*6)/10;
   red_dc /= 100;
   ir_dc /=100;
   float r = (red_ac/red_dc)/(ir_ac/ir_dc);
   spo2 = 110 -25 * r;
+
+  if (heartRate < 60 || hearRate > 105){
+      Serial.println(6);
+    }
+
+  if (spo2 > 94){
+      Serial.println(7);
+    }
+       
+  }
   
 }
