@@ -63,3 +63,14 @@ In the directory Camera, You can access various files named [Camera](https://git
 - The primary purpose of this system is to identify instances where an elderly person may have fallen down. When such a fall condition is detected, the system generates an output file to alert caregivers or relevant personnel. It's crucial to emphasize that this approach prioritizes non-invasive and privacy-conscious techniques for the purpose of caretaking. The system respects the individual's privacy and does not involve intrusive surveillance. This technology aims to provide an unobtrusive means of enhancing the safety and well-being of elderly individuals under care.
 
 ## Main
+The [main.py](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/blob/main/main.py) file is responsible for starting the application and handle the communication between the microprocessors used for input and output, along with the controlling the camera and sounds used by theis application. It has the following functions:
+
+- connect(port) - This function is used to connect to the serial monitor of a microprocessor, it takes in the port as a parameter and returns the a Serial.serial object
+
+- writeData(ard, data) - This function is used to write given data to the serial monitor, it takes the serial object created by connect() along with the data to be written and writes the data in a string format to the arduino
+
+- readData(ard) - This function is used to read the serial data from the serial monitor, it takes the serial object created by connect() and returns the data as a string enclosed by b''
+
+- connection(inp, out) - This function is the main function of the program and is responsible of all the functioning. It takes two serial objects as parameters the first one being responsible for input of data and the second one responsible for the output of the data.
+
+- startCam() - This function is responsible for starting the camera

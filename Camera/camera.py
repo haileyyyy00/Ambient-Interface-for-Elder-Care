@@ -1,9 +1,8 @@
-import cv2
+import cv2, playsound
 import mediapipe as mp
 import numpy as np
 from keras.models import load_model
 from keras.preprocessing.image import img_to_array
-import cv2
 import numpy as np
 
 
@@ -15,9 +14,6 @@ def main():
 
     mp_drawing = mp.solutions.drawing_utils
     mp_pose = mp.solutions.pose
-    labels = []
-    emotion = 0
-    fallDetected = 0
     cap = cv2.VideoCapture(0)
     ## Setup mediapipe instance
     with mp_pose.Pose(
@@ -149,12 +145,9 @@ def main():
                     label = emotion_labels[prediction.argmax()]
                     label_position = (x, y)
                     if label == "Happy":
-                        emotion = 2
+                        playsound("../Audio/HappyMood.mp3")
                     elif label == "Sad":
-                        emotion = 3
-                    else:
-                        emotion = 0
-                    return emotion
+                        playsound("../Audio/SadMood.mp3")
             # Extract landmarks
             try:
                 landmarks = results.pose_landmarks.landmark
@@ -1151,8 +1144,7 @@ def main():
                 if falling:
                     stage = "falling"
 
-                    fallDetected = 1
-                    return fallDetected
+                    playsound("../Audio/FallDetection.mp3")
 
                 if (
                     Point_of_action_X < 320
@@ -1410,8 +1402,3 @@ def main():
         cap.release()
         cv2.destroyAllWindows()
     
-    if fallDetected:
-        return fallDetected
-    
-    if emotion:
-        return emotion

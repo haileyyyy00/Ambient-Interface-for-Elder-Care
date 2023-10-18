@@ -4,6 +4,15 @@ import Camera.camera, multiprocessing as mp
 
 
 def connect(port):
+    """
+    Used to connect to serial port
+
+    Args:
+        port ([string]): [port connected to arduino microprocesser]
+
+    Returns:
+        [Serial]: [Serial Port object]
+    """
     try:
         arduino = serial.Serial(port, timeout=1, baudrate=9600)
     except:
@@ -12,23 +21,39 @@ def connect(port):
 
 
 def writeData(ard, data):
+    """Write data to an serial monitor .
+
+    Args:
+        ard ([Serial]): [Serial object for microprocesser to be written data]
+        data ([type]): [Data to be written]
+    """
     ard.write(bytes(data, "utf-8"))
 
 
 def readData(ard):
+    """Read data from a serial monitor .
+
+    Args:
+        ard ([Serial]): [Serial object for microprocesser from which to read data]
+
+    Returns:
+        [String]: [Data that has been read, enclosed in b'']
+    """
     data = ard.readline()
     return str(data)
 
 
 def connection(inp, out):
+    """Performs communication between microprocessers
 
-    p2 = mp.Process(target=startCam)
-    
+    Args:
+        inp ([Serial]): [Serial object of microprocesser to collect data from]
+        out ([Serial]): [Serial object of microprocesser to show output]
+    """
 
     while 1:
 
-        camera = p2.start()
-        data = readData(inp)        
+        data = readData(inp)
 
         # ----------- Manual Activations -------------------
         # data = str(input("Enter interaction number you want to see: "))
@@ -50,26 +75,17 @@ def connection(inp, out):
         if 7 in data:
             writeData(out, "4")  # Irregular SpO2
 
-        if camera == 1:
-            playsound("/Audio/FallDetection.mp3")
-        elif camera == 2:
-            playsound("/Audio/Happy.mp3")
-        elif camera == 3:
-            playsound("/Audio/Sad.mp3")
-
-
-        p2.stop()
-
 
 # ----------- Manual Triggers -------------------
 #  - MAX3010
 # writeData(in,"1")
 # cam = p2.start()
-# 
+#
 # --------------------------------------------------
 
 
 def startCam():
+    """Start camera ."""
     Camera.main()
 
 
@@ -78,5 +94,7 @@ if __name__ == "__main__":
     inp = connect("COM7")
     out = connect("COM5")
 
-    p1 = mp.Process(target=connection, args=(inp, out))    
+    p1 = mp.Process(target=connection, args=(inp, out))
+    p2 = mp.Process(target=startCam)
+    p2.start()
     p1.start()
