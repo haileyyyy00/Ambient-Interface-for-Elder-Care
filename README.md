@@ -18,7 +18,7 @@ The project focuses on creating an ambient interface to support the elderly with
 
 - [Input](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/blob/main/README.md#input-component)
 - [Output](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#output-component)
-- [Models] (https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#models-component)
+- [Models](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#models-component)
 - [Audio](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#audio-component)
 - [Camera](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#camera.py)
 - [Main](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#main.py)
