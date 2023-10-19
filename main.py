@@ -63,7 +63,7 @@ def connection(inp, out):
         if "1" in data:  # Ambient Light
             playsound("./Audio/AmbientLight.mp3")
         if "2" in data:  # Abnormal Temperature
-            writeData(out, "4")
+            writeData(out, "1")
         if "3" in data:  # Touch Detected
             playsound("./Audio/TouchSensor.mp3")
         if "4" in data:  # Pressure Detected

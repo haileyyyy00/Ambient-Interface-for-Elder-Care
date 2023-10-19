@@ -1,3 +1,9 @@
+"""
+Created on Mon Oct 16 10:49:04 2023
+
+@author: eudre
+"""
+
 import cv2, playsound
 import mediapipe as mp
 import numpy as np
