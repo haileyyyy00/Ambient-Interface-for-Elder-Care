@@ -1,30 +1,36 @@
-# <p align= "center">Ambient Interface for Elder Care 
+# <p align= "center">Ambient Interface for Elder Care
 
 ## Project Description
+
 The project focuses on creating an ambient interface to support the elderly without intruding on their daily lives. It consists of two components: an in-house tracking system for non-invasive data collection, and an external display for caretakers. By using Arduino-based wearables, IoT technology, and non-invasive audio-visual signals, we ensure seamless monitoring of elderly individuals' health while respecting their privacy. This innovative approach aims to improve elderly care without compromising their independence and comfort.
 
 ## Dependencies
-* Playsound (1.2.2)
-* PySerial
-* TensorFlow
-* CV2
-* Keras
-* Numpy
-* Mediapipe
+
+- Playsound (1.2.2)
+- PySerial
+- TensorFlow
+- CV2
+- Keras
+- Numpy
+- Mediapipe
 
 ## Table of Contents
-* Sensors and Tools
-* [Input](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/blob/main/README.md#input-component)
-* [Output](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#output-component)
-* [Camera](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#camera-file)
-* [Main](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#main)
+
+- [Input](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/blob/main/README.md#input-component)
+- [Output](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#output-component)
+- [Models] (https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#models-component)
+- [Audio](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#audio-component)
+- [Camera](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#camera.py)
+- [Main](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/edit/main/README.md#main.py)
 
 ## Input Component
-In the directory Data You can access a file named [Data.ino](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/blob/main/Data/Data.ino) which essentially is the input file for our project. Due to the conventions from Arduino IDE we had to name the file same as the directory name. <br>
+
+This directory contains the arduino file file named [Input.ino](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/blob/main/Input/Input.ino) which essentially is the input file for our project. It's responsible for collecting data and identifying any iregularities which are communicated to the serial monitor<br>
+
 - <details>
-  <summary> Accessing and Running the File: </summary>
-  - Data > Data.ino > Arduino IDE > Connect Arduino with laptop > Run the file <br>
-</details>
+    <summary> Accessing and Running the File: </summary>
+    - Data > Data.ino > Arduino IDE > Connect Arduino with laptop > Run the file <br>
+  </details>
 
 - This code is designed for our Arduino Uno-based hardware project. Once uploaded to the Arduino using the Arduino IDE, the hardware collects data non-intrusively for processing. The code includes functions for checking temperature and measuring vital signs like SPO2 (blood oxygen saturation) and heart rate using a MAX30105 sensor, pressure sensor and a Photodiode for light. The sensor data is communicated over a serial connection, and the hardware can be triggered to measure vital signs by sending '1' through the serial monitor. The code is set up to provide accurate and non-invasive monitoring for a health-related project.
 
@@ -38,11 +44,13 @@ In the directory Data You can access a file named [Data.ino](https://github.com/
 </details>
 
 ## Output Component
-In the directory Data You can access a file named [Interactions.ino](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/blob/main/Data/Interactions.ino) which essentially is the output file for our project. <br>
+
+This directory contains the arduino file file named [Output.ino](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/blob/main/Output/Output.ino) which essentially is the output file for our project. <br>
+
 - <details>
-  <summary> Accessing and Running the File: </summary>
-  - Data > Interactions.ino > Arduino IDE > Connect Arduino with laptop > Run the file <br>
-</details>
+    <summary> Accessing and Running the File: </summary>
+    - Data > Interactions.ino > Arduino IDE > Connect Arduino with laptop > Run the file <br>
+  </details>
 
 - This code serves as the output component for our hardware project based on the Arduino Uno. It is designed to assist caregivers in identifying abnormalities or issues with the person under their care, particularly elderly individuals. The code controls various devices connected to the Arduino. This code can be a valuable tool for caregivers, helping them identify and respond to various situations involving the person they are caring for, ultimately enhancing the quality of care.
 
@@ -56,13 +64,23 @@ In the directory Data You can access a file named [Interactions.ino](https://git
     6. The code provides caregivers with a visual indication of potential problems, allowing them to take appropriate action.
 </details>
 
-## Camera File
-In the directory Camera, You can access various files named [Camera](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/tree/main/Camera) which essentially is the different python models for our project. <br>
+## Audio Component
 
-- This "Camera Directory," is designed to leverage an external camera system for capturing real-time updates from elderly individuals. However, it's important to note that this system doesn't capture actual images or live photos of the person; instead, it employs a Convolutional Neural Network (CNN) model through a Python script to monitor and detect the movements of the elderly person. <br>
+The [Audio](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/blob/main/audio) directory contains all the audio components needed for our project
+
+## Models Component
+
+The [Models](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/blob/main/models) directory contains various files which essentially are the different models used for fall and emotion detection in our project. <br>
+
+## Camera.py
+
+The [camera.py](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/blob/main/camera.py) file is responsible for using all the models present in [Models](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/blob/main/models) and detect fall or emotions and produce corresponding audio.
+
+- camera.py is designed to leverage an external camera system for capturing real-time updates from elderly individuals. However, it's important to note that this system doesn't capture actual images or live photos of the person; instead, it employs a Convolutional Neural Network (CNN) model through a Python script to monitor and detect the movements of the elderly person. <br>
 - The primary purpose of this system is to identify instances where an elderly person may have fallen down. When such a fall condition is detected, the system generates an output file to alert caregivers or relevant personnel. It's crucial to emphasize that this approach prioritizes non-invasive and privacy-conscious techniques for the purpose of caretaking. The system respects the individual's privacy and does not involve intrusive surveillance. This technology aims to provide an unobtrusive means of enhancing the safety and well-being of elderly individuals under care.
 
-## Main
+## Main.py
+
 The [main.py](https://github.com/kushagra1912/Ambient-Interface-for-Elder-Care/blob/main/main.py) file is responsible for starting the application and handle the communication between the microprocessors used for input and output, along with the controlling the camera and sounds used by theis application. It has the following functions:
 
 - connect(port) - This function is used to connect to the serial monitor of a microprocessor, it takes in the port as a parameter and returns the a Serial.serial object
