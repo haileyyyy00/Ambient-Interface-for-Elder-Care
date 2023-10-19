@@ -4,7 +4,7 @@
 The project focuses on creating an ambient interface to support the elderly without intruding on their daily lives. It consists of two components: an in-house tracking system for non-invasive data collection, and an external display for caretakers. By using Arduino-based wearables, IoT technology, and non-invasive audio-visual signals, we ensure seamless monitoring of elderly individuals' health while respecting their privacy. This innovative approach aims to improve elderly care without compromising their independence and comfort.
 
 ## Dependencies
-* Playsound
+* Playsound (1.2.2)
 * PySerial
 * TensorFlow
 * CV2

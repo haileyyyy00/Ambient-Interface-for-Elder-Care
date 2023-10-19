@@ -35,16 +35,16 @@ void loop() {
   int in = Serial.parseInt();
   switch(in){
     case 1:
-      startMist();
-      break;
-    case 2:
       startHeat();
       break;
+    case 2:
+      startMist();
+      break;
     case 3:
-      irrLights();
+      heartLights();
       break;
      case 4:
-      heartLights();
+      irrLights();
       break;
       
     } 

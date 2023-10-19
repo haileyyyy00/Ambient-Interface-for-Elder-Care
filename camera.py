@@ -7,8 +7,8 @@ import numpy as np
 
 
 def main():
-    face_classifier = cv2.CascadeClassifier(r"haarcascade_frontalface_default.xml")
-    classifier = load_model(r"model.h5")
+    face_classifier = cv2.CascadeClassifier(r"./Models/haarcascade_frontalface_default.xml")
+    classifier = load_model(r"./Models/model.h5")
 
     emotion_labels = ["Angry", "Disgust", "Fear", "Happy", "Neutral", "Sad", "Surprise"]
 

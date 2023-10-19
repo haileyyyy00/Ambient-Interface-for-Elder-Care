@@ -22,9 +22,8 @@ int pulseLED = 11; //Must be on PWM pin
 int readLED = 13; //Blinks with each data read
 
 // Touch Functionality
-int touchSens = 12;
+int touchSens = 2;
 int inputState;
-int lastInputState=1;
 
 void setup(){
   
@@ -33,7 +32,7 @@ void setup(){
 // Initialize MAX30102
   pinMode(pulseLED, OUTPUT);
   pinMode(readLED, OUTPUT);
-  particleSensor.begin(Wire, I2C_SPEED_FAST)
+  particleSensor.begin(Wire, I2C_SPEED_FAST);
 
   byte ledBrightness = 60; //Options: 0=Off to 255=50mA
   byte sampleAverage = 4; //Options: 1, 2, 4, 8, 16, 32
@@ -73,27 +72,26 @@ void checkLight(){
   }
   
 void checkHeat(){
-  int tempVal = analogRead(A1);  
+  int tempVal = analogRead(A2);  
   float voltage = tempVal * (5.0 / 1023.0);
   float temperature = voltage * 100;
-  if (temperature > 20){
+  if (temperature > 25){
     Serial.println(2);
   }  
 }
 
 void checkTouch(){
   inputState=digitalRead(touchSens);
-  if(lastInputState==0 && inputState==1){
-    if (LEDState==0){
+  if(inputState== HIGH){
       Serial.println(3);
     }
-  lastInputState=inputState;
 }
 
 void checkPress(){
-  int force = analogRead(A2);
+  int force = analogRead(A1);
   if(force > 500){
-    Serial.println(4)
+    Serial.println(4);
+    delay(1000);
   }  
 }
 
@@ -110,7 +108,6 @@ void checkHO2(){
   ir_min = 400;
   red_max = 0;
   red_min = 50000;
-  serial.println("Measuring vitals...")
 
     for (byte i = 0 ; i < 100 ; i++)  {
       while (particleSensor.available() == false) //do we have new data?
@@ -137,20 +134,18 @@ void checkHO2(){
         particleSensor.nextSample();
     }   
 
-  heartRate = (beats*6)/10;
+  int heartRate = (beats*6)/10;
   red_dc /= 100;
   ir_dc /=100;
   float r = (red_ac/red_dc)/(ir_ac/ir_dc);
   spo2 = 110 -25 * r;
 
-  if (heartRate < 60 || hearRate > 105){
+  if (heartRate < 60 || heartRate > 105){
       Serial.println(6);
     }
 
   if (spo2 > 94){
       Serial.println(7);
     }
-       
-  }
   
 }

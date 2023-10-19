@@ -1,6 +1,7 @@
-import time, playsound
+import time
+from playsound import playsound
 import serial
-import Camera.camera, multiprocessing as mp
+import camera, multiprocessing as mp
 
 
 def connect(port):
@@ -50,6 +51,7 @@ def connection(inp, out):
         inp ([Serial]): [Serial object of microprocesser to collect data from]
         out ([Serial]): [Serial object of microprocesser to show output]
     """
+    p2 = mp.Process(target=startCam)
 
     while 1:
 
@@ -58,43 +60,37 @@ def connection(inp, out):
         # ----------- Manual Activations -------------------
         # data = str(input("Enter interaction number you want to see: "))
         # --------------------------------------------------
-
-        if 1 in data:  # Ambient Light
-            playsound("/Audio/AmbientLight.mp3")
-        if 2 in data:  # Abnormal Temperature
-            writeData(out, "1")
-        if 3 in data:  # Touch Detected
-            playsound("/Audio/TouchSensor.mp3")
-        if 4 in data:  # Pressure Detected
-            playsound("/Audio/PressureSensor.mp3")
-        if 5 in data:  # Heart, SpO2 monitoring started
+        if "1" in data:  # Ambient Light
+            playsound("./Audio/AmbientLight.mp3")
+        if "2" in data:  # Abnormal Temperature
+            writeData(out, "4")
+        if "3" in data:  # Touch Detected
+            playsound("./Audio/TouchSensor.mp3")
+        if "4" in data:  # Pressure Detected
+            playsound("./Audio/PressureSensor.mp3")
+        if "5" in data:  # Heart, SpO2 monitoring started
             writeData(out, "2")
             time.sleep(12)
-        if 6 in data:
+        if "6" in data:
             writeData(out, "3")  # Irregular Heartbeat
-        if 7 in data:
+        if "7" in data:
             writeData(out, "4")  # Irregular SpO2
 
 
 # ----------- Manual Triggers -------------------
 #  - MAX3010
 # writeData(in,"1")
-# cam = p2.start()
-#
+# p2.start()
 # --------------------------------------------------
 
 
 def startCam():
     """Start camera ."""
-    Camera.main()
+    camera.main()
 
 
 if __name__ == "__main__":
 
-    inp = connect("COM7")
-    out = connect("COM5")
-
-    p1 = mp.Process(target=connection, args=(inp, out))
-    p2 = mp.Process(target=startCam)
-    p2.start()
-    p1.start()
+    inp = connect("COM8")
+    out = connect("COM7")
+    connection(inp, out)
